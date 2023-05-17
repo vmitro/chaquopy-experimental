@@ -1,0 +1,13 @@
+--- src-orig/setup.py	2023-05-13 11:01:25.000000000 +0000
++++ src/setup.py	2023-05-17 11:48:21.231831844 +0000
+@@ -2,6 +2,10 @@
+ 
+ import os
+ import sys
++# Chaquopy
++import builtins
++sys.path.insert(0, os.path.abspath("../requirements"))  # For numpy.distutils
++builtins.__NUMPY_SETUP__ = True  # Prevent the rest of NumPy from being imported.
+ import numpy
+ 
+ from setuptools import Command, Extension, setup
