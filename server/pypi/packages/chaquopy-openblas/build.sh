@@ -3,7 +3,13 @@ set -eu
 
 export CROSS="1"
 export CROSS_SUFFIX=$(echo $CC | sed 's/gcc$//')  # Actually a prefix
-export HOSTCC="gcc"
+export HOSTCC="clang"
+export FC=/usr/local/aarch64-linux-android/bin/aarch64-linux-android-gfortran
+cp /usr/local/aarch64-linux-android/aarch64-linux-android/lib64/libgfortran* $SRC_DIR/../requirements/chaquopy/lib
+
+export CMAKE_VERBOSE_MAKEFILES=1
+#export ONLY_CBLAS=1
+#export NOFORTRAN=1
 
 # "If your application is already multi-threaded, it will conflict with OpenBLAS
 # multi-threading. Thus, you must set OpenBLAS to use single thread."
@@ -25,6 +31,7 @@ export NUM_THREADS=8
 # (http://wwwf.imperial.ac.uk/~mab201/20120814.html and
 # https://github.com/xianyi/OpenBLAS/issues/477#issuecomment-222378330).
 export FFLAGS="-frecursive"
+#export ONLY_CBLAS=1 # this makes it so that
 
 case $CHAQUOPY_ABI in
     armeabi-v7a)
@@ -79,6 +86,6 @@ make -j "$CPU_COUNT"
 
 make install  # The PREFIX environment variable will be respected.
 cd $PREFIX/lib
-rm *.a
+#rm *.a
 find -type l | xargs rm
 mv *.so libopenblas.so
