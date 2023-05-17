@@ -645,7 +645,10 @@ class BuildWheel:
     def get_requirements(self, req_type):
         reqs = []
         for req in self.meta["requirements"][req_type]:
-            package, version = req.split()
+            try:
+                package, version = req.split()
+            except ValueError:
+                raise CommandError(f"Failed to parse requirement {req!r}")
             reqs.append((package, version))
         return reqs
 
@@ -687,7 +690,7 @@ class BuildWheel:
 
 def find_license_files(path):
     return [f"{path}/{name}" for name in os.listdir(path)
-            if re.search(r"^(LICEN[CS]E|COPYING)", name.upper())]
+            if re.search(r"^(LICEN[CS]E|COPYING|COPYRIGHT)", name.upper())]
 
 
 def update_requirements(filename, reqs):
