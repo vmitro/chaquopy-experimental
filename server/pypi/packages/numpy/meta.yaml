@@ -1,6 +1,6 @@
 package:
   name: numpy
-  version: 1.23.3
+  version: 1.24.2
 
 build:
   number: 0
@@ -9,4 +9,4 @@ requirements:
   build:
     - Cython 0.29.32
   host:
-    - chaquopy-openblas 0.2.20
+    - chaquopy-openblas 0.3.23

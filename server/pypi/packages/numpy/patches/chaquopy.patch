@@ -94,18 +94,6 @@ diff -ur src-original/numpy/f2py/f90mod_rules.py src/numpy/f2py/f90mod_rules.py
  
  fgetdims2 = """\
        end if
---- src-original/numpy/linalg/setup.py  2021-11-04 11:34:22.000000000 +0000
-+++ src/numpy/linalg/setup.py   2021-11-14 13:25:47.735131016 +0000
-@@ -33,6 +33,8 @@
-     use_lapack_lite = not lapack_info
-
-     if use_lapack_lite:
-+        raise Exception("LAPACK not found")  # Chaquopy: fail the build if this happens.
-+
-         # This makes numpy.distutils write the fact that lapack_lite
-         # is being used to numpy.__config__
-         class numpy_linalg_lapack_lite(system_info):
-diff -ur src-original/numpy/random/setup.py src/numpy/random/setup.py
 --- src-original/numpy/random/setup.py  2021-11-04 11:34:22.000000000 +0000
 +++ src/numpy/random/setup.py   2021-11-07 22:58:46.949580497 +0000
 @@ -26,7 +26,8 @@
@@ -140,12 +128,13 @@ diff -ur src-original/numpy/__init__.py src/numpy/__init__.py
 diff -ur src-original/setup.py src/setup.py
 --- src-original/setup.py       2018-04-15 20:25:55.769497865 +0000
 +++ src/setup.py        2018-04-15 19:32:59.070017179 +0000
-@@ -39,6 +39,10 @@
+@@ -39,6 +38,11 @@
      import __builtin__ as builtins
  
  
 +# Chaquopy added
 +os.environ["OPENBLAS"] = os.path.abspath("../requirements/chaquopy/lib")
++print(f">>>> {sys.}")
 +
 +
  CLASSIFIERS = """\
