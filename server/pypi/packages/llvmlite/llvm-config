@@ -14,7 +14,8 @@ elif [ "$*" == "--cxxflags" ]; then
 elif [ "$*" == "--ldflags" ]; then
     echo -L $chaquopy_dir/lib
 elif [ "$*" == "--system-libs --libs all" ]; then
-    echo -lLLVM-${llvm_version:0:1}
+    echo -lLLVMAArch64Disassembler -lLLVMMCDisassembler -lLLVMAArch64AsmParser -lLLVMAArch64CodeGen -lLLVMCFGuard -lLLVMGlobalISel -lLLVMSelectionDAG -lLLVMAsmPrinter -lLLVMDebugInfoMSF -lLLVMCodeGen -lLLVMTarget -lLLVMScalarOpts -lLLVMInstCombine -lLLVMAggressiveInstCombine -lLLVMTransformUtils -lLLVMBitWriter -lLLVMAnalysis -lLLVMProfileData -lLLVMDebugInfoDWARF -lLLVMObject -lLLVMTextAPI -lLLVMMCParser -lLLVMBitReader -lLLVMCore -lLLVMRemarks -lLLVMBitstreamReader -lLLVMAArch64Desc -lLLVMAArch64Utils -lLLVMAArch64Info -lLLVMMC -lLLVMDebugInfoCodeView -lLLVMBinaryFormat -lLLVMSupport -lLLVMDemangle
+    # updated to support double-digit llvm version  -lLLVM-${llvm_version:0:2} 
 else
     echo $0: Unknown arguments: \'$*\'
     exit 1

@@ -1,10 +1,10 @@
 package:
   name: llvmlite
-  version: 0.31.0
+  version: 0.39.1
 
 build:
   number: 2
 
 requirements:
   host:
-    - chaquopy-llvm 8.0.0
+    - chaquopy-llvm 11.1.0
