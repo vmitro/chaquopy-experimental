@@ -1,0 +1,74 @@
+--- src-orig/tools/setup_helpers/cmake.py	2023-05-09 21:03:51.000000000 +0000
++++ src/tools/setup_helpers/cmake.py	2023-05-09 20:54:52.770260250 +0000
+@@ -7,7 +7,7 @@
+ import sys
+ import sysconfig
+ from distutils.version import LooseVersion
+-from subprocess import CalledProcessError, check_call, check_output
++from subprocess import CalledProcessError, check_call, run, check_output
+ from typing import Any, cast, Dict, List, Optional
+ 
+ from . import which
+@@ -30,7 +30,6 @@
+ # ninja python package, but we no longer use it, so we do not have to import it
+ USE_NINJA = not check_negative_env_flag("USE_NINJA") and which("ninja") is not None
+ 
+-
+ class CMake:
+     "Manages cmake."
+ 
+@@ -281,8 +280,8 @@
+                 # Note: Do not add new build options to this dict if it is directly read from environment variable -- you
+                 # only need to add one in `CMakeLists.txt`. All build options that start with "BUILD_", "USE_", or "CMAKE_"
+                 # are automatically passed to CMake; For other options you can add to additional_options above.
+-                "BUILD_PYTHON": build_python,
+-                "BUILD_TEST": build_test,
++                "BUILD_PYTHON": "ON",
++                "BUILD_TEST": "OFF",
+                 # Most library detection should go to CMake script, except this one, which Python can do a much better job
+                 # due to NumPy's inherent Pythonic nature.
+                 "USE_NUMPY": USE_NUMPY,
+@@ -305,12 +304,43 @@
+             sys.exit(1)
+         build_options.update(cmake__options)
+ 
++        # CHaquopy: see https://github.com/shibatch/sleef/issues/249
++        build_sleef_native = os.path.abspath("build-sleef-native")
++        if not os.path.exists(build_sleef_native): # For rerunning with build-wheel.py --no-unpack
++            os.mkdir(build_sleef_native)
++            sleef_env = os.environ.copy()
++            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++                         "NM", "RANLIB", "READELF", "STRIP"]:
++                sleef_env.pop(name, None)
++            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++            import pprint; pp = pprint.PrettyPrinter(indent=4)
++            pp.pprint(kwargs)
++            run([os.path.join(os.environ['RECIPE_DIR'], 'build-sleef.sh'), build_sleef_native], cwd=build_sleef_native, env=sleef_env)
++            run(os.path.join(os.environ['RECIPE_DIR'], 'build-protoc.sh'), cwd=os.environ['SRC_DIR'], env=sleef_env)
++            #check_call(["cmake", "../third_party/sleef"], **kwargs)
++            #check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
++        protoc_bin = os.path.join(os.environ['SRC_DIR'], 'build_host_protoc', 'bin', 'protoc')
++
+         CMake.defines(
+             args,
+             PYTHON_EXECUTABLE=sys.executable,
+             PYTHON_LIBRARY=cmake_python_library,
+             PYTHON_INCLUDE_DIR=sysconfig.get_path("include"),
++            #CMAKE_TOOLCHAIN_FILE=os.path.abspath("../chaquopy.toolchain.cmake"),
++            BLAS="OpenBLAS",
++            USE_CUDA="0",
++            USE_VULKAN="0",
++            INSTALL_TEST="0",
++            BUILD_MOBILE_BENCHMARK="0",
++            BUILD_MOBILE_TEST="0",
++            TRACING_BASED="OFF",
++            BUILD_SHARED_LIBS="ON",
++            ANDROID_STL="c++_shared",
+             TORCH_BUILD_VERSION=version,
++            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=protoc_bin,
++            ONNX_CUSTOM_PROTOC_EXECUTABLE=protoc_bin,
++            NATIVE_BUILD_DIR=build_sleef_native,
+             NUMPY_INCLUDE_DIR=NUMPY_INCLUDE_DIR,
+             **build_options,
+         )

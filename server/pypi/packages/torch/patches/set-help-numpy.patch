@@ -1,0 +1,19 @@
+--- src-orig/tools/setup_helpers/numpy_.py	2023-04-25 09:24:05.000000000 +0000
++++ src/tools/setup_helpers/numpy_.py	2023-04-27 08:46:29.350243914 +0000
+@@ -15,9 +15,15 @@
+ 
+ if USE_NUMPY:
+     try:
++        # Chaquopy
++        import os.path
++        import sys
++        sys.path.insert(0, os.path.abspath("../requirements"))
++        import builtins
++        builtins.__NUMPY_SETUP__ = True  # Prevent NumPy runtime from being imported.
+         import numpy as np
+     except ImportError:
+-        pass
++        raise
+     else:
+         # To reach here, the user must has not disabled NumPy build and the
+         # NumPy library is present in the system.

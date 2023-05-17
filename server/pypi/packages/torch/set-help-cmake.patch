@@ -1,0 +1,36 @@
+--- src-orig/tools/setup_helpers/cmake.py	2023-04-25 09:24:05.000000000 +0000
++++ src/tools/setup_helpers/cmake.py	2023-04-27 09:08:51.194494326 +0000
+@@ -281,8 +281,8 @@
+                 # Note: Do not add new build options to this dict if it is directly read from environment variable -- you
+                 # only need to add one in `CMakeLists.txt`. All build options that start with "BUILD_", "USE_", or "CMAKE_"
+                 # are automatically passed to CMake; For other options you can add to additional_options above.
+-                "BUILD_PYTHON": build_python,
+-                "BUILD_TEST": build_test,
++                "BUILD_PYTHON": "ON",
++                "BUILD_TEST": "OFF",
+                 # Most library detection should go to CMake script, except this one, which Python can do a much better job
+                 # due to NumPy's inherent Pythonic nature.
+                 "USE_NUMPY": USE_NUMPY,
+@@ -307,9 +307,19 @@
+ 
+         CMake.defines(
+             args,
+-            PYTHON_EXECUTABLE=sys.executable,
+-            PYTHON_LIBRARY=cmake_python_library,
+-            PYTHON_INCLUDE_DIR=sysconfig.get_path("include"),
++            PYTHON_EXECUTABLE=sys.executable,
++            PYTHON_LIBRARY=cmake_python_library,
++            PYTHON_INCLUDE_DIR=sysconfig.get_path("include"),
++            #CMAKE_TOOLCHAIN_FILE=os.path.abspath("../chaquopy.toolchain.cmake"),
++            BLAS="OpenBLAS",
++            USE_CUDA="0",
++            USE_VULKAN="0",
++            INSTALL_TEST="0",
++            BUILD_MOBILE_BENCHMARK="0",
++            BUILD_MOBILE_TEST="0",
++            TRACING_BASED="OFF",
++            BUILD_SHARED_LIBS="ON",
++            ANDROID_STL="c++_shared",
+             TORCH_BUILD_VERSION=version,
+             NUMPY_INCLUDE_DIR=NUMPY_INCLUDE_DIR,
+             **build_options,

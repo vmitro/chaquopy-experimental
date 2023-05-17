@@ -1,0 +1,11 @@
+--- src-orig/torch/_utils_internal.py	2023-04-25 09:24:05.000000000 +0000
++++ src/torch/_utils_internal.py	2023-04-27 08:47:28.186130395 +0000
+@@ -39,7 +39,7 @@
+ 
+ 
+ def resolve_library_path(path: str) -> str:
+-    return os.path.realpath(path)
++    return os.path.abspath(path)
+ 
+ 
+ TEST_MASTER_ADDR = "127.0.0.1"

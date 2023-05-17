@@ -1,0 +1,24 @@
+--- a/setup.py	2022-11-03 16:41:43.832891000 +0100
++++ b/setup.py	2023-04-09 19:03:55.308192581 +0200
+@@ -23,7 +23,7 @@
+ max_python_version = "3.11"  # exclusive
+ min_numpy_build_version = "1.11"
+ min_numpy_run_version = "1.18"
+-max_numpy_run_version = "1.24"
++max_numpy_run_version = "1.25"
+ min_llvmlite_version = "0.39.0dev0"
+ max_llvmlite_version = "0.40"
+ 
+@@ -138,6 +138,12 @@
+     """
+     Return a list of Extension instances for the setup() call.
+     """
++
++    # Chaquopy
++    import builtins
++    sys.path.insert(0, os.path.abspath("../requirements"))  # For numpy.distutils
++    builtins.__NUMPY_SETUP__ = True  # Prevent the rest of NumPy from being imported.
++
+     # Note we don't import Numpy at the toplevel, since setup.py
+     # should be able to run without Numpy for pip to discover the
+     # build dependencies

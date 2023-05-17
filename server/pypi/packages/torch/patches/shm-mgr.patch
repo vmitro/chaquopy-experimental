@@ -1,0 +1,21 @@
+--- src-orig/torch/lib/libshm/manager.cpp	2023-04-25 09:24:06.000000000 +0000
++++ src/torch/lib/libshm/manager.cpp	2023-04-27 08:41:35.482842722 +0000
+@@ -60,7 +60,8 @@
+ }
+ 
+ bool object_exists(const char* name) {
+-  int fd = shm_open(name, O_RDONLY, 0);
++  //int fd = shm_open(name, O_RDONLY, 0);
++  int fd = -1;
+   if (fd >= 0) {
+     close(fd);
+     return true;
+@@ -170,7 +171,7 @@
+ 
+   for (auto& obj_name : used_objects) {
+     DEBUG("freeing %s", obj_name.c_str());
+-    shm_unlink(obj_name.c_str());
++    //shm_unlink(obj_name.c_str());
+   }
+ 
+   // Clean up file descriptors

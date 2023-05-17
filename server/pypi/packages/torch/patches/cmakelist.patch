@@ -1,0 +1,11 @@
+--- src-orig/CMakeLists.txt	2023-05-09 21:03:50.000000000 +0000
++++ src/CMakeLists.txt	2023-05-09 21:43:45.630690521 +0000
+@@ -567,7 +567,7 @@
+ # force it to do mobile build with host toolchain - which is useful for testing
+ # purpose.
+ if(ANDROID OR IOS OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
+-  set(INTERN_BUILD_MOBILE ON)
++  # set(INTERN_BUILD_MOBILE ON)
+   message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
+   set(BUILD_LAZY_TS_BACKEND OFF)
+ 

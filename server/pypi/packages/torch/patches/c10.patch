@@ -1,0 +1,10 @@
+--- src-orig/c10/macros/Macros.h	2023-05-09 21:39:23.212435790 +0000
++++ src/c10/macros/Macros.h	2023-05-09 21:39:58.236939963 +0000
+@@ -415,7 +415,6 @@
+ 
+ #if defined(__ANDROID__)
+ #define C10_ANDROID 1
+-#define C10_MOBILE 1
+ #elif (                   \
+     defined(__APPLE__) && \
+     (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))

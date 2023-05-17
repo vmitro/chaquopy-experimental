@@ -1,0 +1,32 @@
+--- src-orig/cmake/MiscCheck.cmake	2023-04-25 09:24:05.000000000 +0000
++++ src/cmake/MiscCheck.cmake	2023-04-27 09:28:16.092041366 +0000
+@@ -24,7 +24,7 @@
+     int main() { return 0; }
+     " COMPILER_WORKS)
+   else()
+-    CHECK_C_SOURCE_RUNS("
++    CHECK_C_SOURCE_COMPILES("
+     int main() { return 0; }
+     " COMPILER_WORKS)
+   endif()
+@@ -115,7 +115,7 @@
+ 
+ # ---[ Check if the compiler has AVX/AVX2 support. We only check AVX2.
+ if(NOT INTERN_BUILD_MOBILE)
+-  find_package(AVX) # checks AVX and AVX2
++  # find_package(AVX) # checks AVX and AVX2
+   if(CXX_AVX2_FOUND)
+     message(STATUS "Current compiler supports avx2 extension. Will build perfkernels.")
+     # Also see CMakeLists.txt under caffe2/perfkernels.
+@@ -160,9 +160,9 @@
+        __m512i r = _mm512_andnot_si512(a, a);
+      }" CAFFE2_COMPILER_SUPPORTS_AVX512_EXTENSIONS)
+ if(CAFFE2_COMPILER_SUPPORTS_AVX512_EXTENSIONS)
+-  message(STATUS "Current compiler supports avx512f extension. Will build fbgemm.")
++  message(STATUS "Current compiler supports avx512f extension. Will NOT build fbgemm, though (Android/Chaquopy).")
+   # Also see CMakeLists.txt under caffe2/perfkernels.
+-  set(CAFFE2_PERF_WITH_AVX512 1)
++  set(CAFFE2_PERF_WITH_AVX512 0)
+ endif()
+ cmake_pop_check_state()
+ 

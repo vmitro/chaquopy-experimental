@@ -1,0 +1,11 @@
+--- src-orig/cmake/Dependencies.cmake	2023-04-25 09:24:05.000000000 +0000
++++ src/cmake/Dependencies.cmake	2023-04-27 09:22:55.424958888 +0000
+@@ -1565,7 +1565,7 @@
+     # In mobile build we care about code size, and so we need drop
+     # everything (e.g. checker) in onnx but the pb definition.
+     if(ANDROID OR IOS)
+-      caffe2_interface_library(onnx_proto onnx_library)
++      caffe2_interface_library(onnx onnx_library) # CHaquopy: Was onnx_proto
+     else()
+       caffe2_interface_library(onnx onnx_library)
+     endif()
