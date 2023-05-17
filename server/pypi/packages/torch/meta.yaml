@@ -1,4 +1,4 @@
-{% set version = "1.8.1" %}
+{% set version = "1.13.1" %}
 
 package:
   name: torch
@@ -17,5 +17,5 @@ requirements:
     - typing-extensions 3.10.0.0
   host:
     - python
-    - chaquopy-openblas 0.2.20
-    - numpy 1.17.4
+    - chaquopy-openblas 0.3.23
+    - numpy 1.24.2
