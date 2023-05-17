@@ -1,10 +1,11 @@
 package:
   name: numba
-  version: 0.48.0
+  version: 0.56.4
 
 build:
   number: 9
 
 requirements:
   host:
-    - numpy 1.17.4
+    - numpy 1.24.2
+    - chaquopy-openblas 0.3.23
