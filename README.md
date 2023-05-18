@@ -1,4 +1,4 @@
-# An experimental build of Chaquopy: the Python SDK for Android for CPython 3.10 with Android API 31
+# An experimental Chaquopy repository targeting CPython 3.10 with Android API 31
 
 ## From the official README.md:
 
@@ -23,8 +23,9 @@ To get started, see the [documentation](https://chaquo.com/chaquopy/doc/current/
     - Numba XX.YY
     - PyTorch 1.13.1
 - Experimental
-    - Tiktoken, a Python package with some heavy-lifting written in Rust can be built
+    - Tiktoken, a Python package with some heavy-lifting written in Rust can be built with some hacking on the `setuptools-rust` package
 - Untested
+    - Many packages build successfully but are untested, pull requests with tests welcome
 - Fully open to requests, pull requests, critique and extension
 - An (experimental, have I mentioned this yet?) way to build Chaquopy Wheels for the aformentioned targets
 
