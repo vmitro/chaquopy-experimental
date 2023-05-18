@@ -9,6 +9,9 @@ x86_64). However, the tool itself only runs on Linux x86-64. If you don't alread
 Linux machine available, a cheap virtual server from somewhere like DigitalOcean will do
 just fine.
 
+## Experimental
+
+A in depth guide on setting up a development environment and some common pitfalls is located at [common-pitfalls-and-solutions.md]. Feel free to skip all the way to about 50% of the document for the info of configuring Chaquopy to build wheel files. If you are very new to all this Linux/C/C++ and native build tools, you'll find the overly detailed info in the first half useful for understanding what's it all about.
 
 ## Setup
 
