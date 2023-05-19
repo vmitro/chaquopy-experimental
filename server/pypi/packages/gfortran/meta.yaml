@@ -1,0 +1,14 @@
+package:
+  name: chaquopy-gfortran
+  version: 4.9.0
+
+source:
+  git_url: https://android.googlesource.com/toolchain/gcc
+  git_rev: master
+
+build:
+  number: 1
+    #
+    #requirements:
+  #  build:
+  #    - git
