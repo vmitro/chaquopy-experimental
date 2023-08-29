@@ -4,7 +4,7 @@
 #
 # You may also override the following:
 : ${abi:=$(basename $prefix)}
-: ${api_level:=31}  # Should match MIN_SDK_VERSION in Common.java.
+: ${api_level:=21}  # Should match MIN_SDK_VERSION in Common.java.
 
 echo Prefix is: $prefix 2>&1
 #read
@@ -51,8 +51,8 @@ esac
 export HOST_TRIPLE=$the_triplet
 : ${toolchain:=$ndk/toolchains/llvm/prebuilt/linux-x86_64} # works
 export NDK_TOOLCHAIN=$ndk/toolchains/llvm/prebuilt/linux-x86_64
-export NDK_SYSROOT=$toolchain/sysroot
-: ${api_sysroot:=$sysroot/usr/lib/aarch64-linux-android/$api_level}
+export NDK_SYSROOT=$NDK_TOOLCHAIN/sysroot
+#: ${api_sysroot:=$sysroot/usr/lib/aarch64-linux-android/$api_level}
 
 export THE_TARGET=${clang_triplet:-$host_triplet}$api_level # the triple with api level, no path
 export THE_TARGET_WITHOUT_API=${clang_triplet:-$host_triplet}
@@ -67,25 +67,28 @@ export AS="$toolchain/bin/$host_triplet-as"
 export CC_TRIPLE_TARGET="$toolchain/bin/clang --target=$THE_TARGET"
 export CC_TRIPLE_PREFIX="$THE_TRIPLE$ANDROID_API-clang" 
 export CXX_TRIPLE_PREFIX="$THE_TRIPLE$ANDROID_API-clang++"
-export CC="$CC_TRIPLE_PREFIX -v"
+export CC="$CC_TRIPLE_PREFIX"
 #export CXX="$toolchain/bin/clang++ --target=${clang_triplet:-$host_triplet}$api_level -v -arch aarch64"
-export CXX="$toolchain/bin/$THE_TARGET-clang++ -v"
+export CXX="$toolchain/bin/$THE_TARGET-clang++"
 # clashes with gfortran! cannot link
 #export LD="$CC -fuse-ld=lld"
-export LD=$CC
+#export LD=$CC
+export FC=/usr/local/$HOST_TRIPLE/bin/$HOST_TRIPLE-gfortran
+export LD=$toolchain/bin/ld
 export NM="$toolchain/bin/llvm-nm"
 export RANLIB="$toolchain/bin/llvm-ranlib"
 export READELF="$toolchain/bin/llvm-readelf"
 export STRIP="$toolchain/bin/llvm-strip"
 
-export CFLAGS="-I${prefix:?}/include"
-export CPPFLAGS="-O0 -fno-optimize"
+export CFLAGS="-v -I${prefix:?}/include -I$NDK_SYSROOT/usr/include/$HOST_TRIPLE"
+export CPPFLAGS="-v"
+#export CPPFLAGS="-O0 -fno-optimize"
 
 # clashes with gfortran when added -fus-ld=lld
 export LDFLAGS="-L${prefix:?}/lib \
 -Wl,--build-id=sha1 \
 -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libunwind.a"
-export LDSHARED="$toolchain/bin/clang++ -fuse-ld=lld -shared --target=$the_target -triple=$the_triplet -m aarch64linux"
+export LDSHARED="$toolchain/bin/clang++ -fuse-ld=lld -shared --target=$THE_TARGET -triple=$THE_TRIPLE -m aarch64linux"
 
 #
 # Many packages get away with omitting this on standard Linux, but Android is stricter.

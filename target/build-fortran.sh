@@ -23,7 +23,7 @@ toolchain=$(realpath ${1:?})
 cd $target_dir
 . build-common.sh
 
-src_dir=$target_dir/gcc/gcc-4.9)
+src_dir=$target_dir/gcc/gcc-4.9
 cd $src_dir
 contrib/download_prerequisites
 
@@ -33,11 +33,11 @@ mkdir -p $build_dir
 cd $build_dir
 export PATH=$PATH:$toolchain/bin  # For target assembler and linker.
 
-config_args="--target=$host_triplet --enable-languages=c,fortran"
+config_args="--host=x86_64-linux-gnu --target=$host_triplet --enable-languages=c,fortran"
 
 # Since the sysroot is a subdirectory of the prefix, "it will be found relative to the GCC
 # binaries if the installation tree is moved" (https://gcc.gnu.org/install/configure.html).
-config_args+=" --prefix=$toolchain --with-sysroot=$sysroot"
+config_args+=" --prefix=$toolchain --with-sysroot=$NDK_SYSROOT"
 
 # Not simply using `--enable-shared`, because this would also enable a shared libgcc
 # (libgcc_s.so), which has the surprising effect of causing the static libgcc.a, which all
@@ -58,6 +58,7 @@ config_args+=" --prefix=$toolchain --with-sysroot=$sysroot"
 # (https://github.com/android-ndk/ndk/issues/289#issuecomment-289170461). This is done using
 # the -Wl,--exclude-libs flags in build-common-tools.sh and build-wheel.py.
 config_args+=" --enable-shared=libgfortran"
+export PATH=$PATH:$toolchain/bin  # For target assembler and linker.
 
 # libquadmath isn't available for ARM, so be consistent and disable it on all ABIs. This also
 # prevents the build system from giving libgfortran a RUNPATH entry pointing at the temporary

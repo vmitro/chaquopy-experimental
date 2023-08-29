@@ -4,8 +4,8 @@ set -eu
 export CROSS="1"
 export CROSS_SUFFIX=$(echo $CC | sed 's/gcc$//')  # Actually a prefix
 export HOSTCC="clang"
-export FC=/usr/local/aarch64-linux-android/bin/aarch64-linux-android-gfortran
-cp /usr/local/aarch64-linux-android/aarch64-linux-android/lib64/libgfortran* $SRC_DIR/../requirements/chaquopy/lib
+export FC=/usr/local/aarch64-linux-android/bin/$HOST_TRIPLE-gfortran
+#cp /usr/local/aarch64-linux-android/aarch64-linux-android/lib64/libgfortran* $SRC_DIR/../requirements/chaquopy/lib
 
 export CMAKE_VERBOSE_MAKEFILES=1
 #export ONLY_CBLAS=1

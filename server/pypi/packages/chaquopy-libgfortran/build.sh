@@ -10,4 +10,5 @@ if [[ $toolchain_version != $PKG_VERSION ]]; then
 fi
 
 mkdir -p $PREFIX/lib
-cp /usr/lib*/*/libgfortran.so.5 $PREFIX/lib
+cp -L /usr/local/$HOST_TRIPLE/$HOST_TRIPLE/lib64/libgfortran.so.3 $PREFIX/lib
+#cp /usr/lib*/*/libgfortran.so.5 $PREFIX/lib
