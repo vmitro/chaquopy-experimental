@@ -20,11 +20,11 @@ First, clone this repository.
 Then, go to [this Maven Central
 page](https://repo.maven.apache.org/maven2/com/chaquo/python/target/) and select which
 Python version you want to build for. Within a given Python minor version (e.g. 3.8),
-you should usually use the newest version available. On that version's page, find
-the .zip for the ABI you want to build for, and download it into a corresponding
-subdirectory of `maven` in the root of this repository. For example, anything you download
-from https://repo.maven.apache.org/maven2/com/chaquo/python/target/3.8.16-0/ should be
-placed in `maven/com/chaquo/python/target/3.8.16-0`.
+you should usually use the newest version available. Then use `download-target.sh` to
+download it into `maven` in the root of this repository. For example, to download
+version 3.8.16-0, run:
+
+    target/download-target.sh maven/com/chaquo/python/target/3.8.16-0
 
 You'll also need a matching version of Python installed on your build machine. For
 example, if you're building for Python 3.8, then `python3.8` must be on the PATH. You may
@@ -54,8 +54,17 @@ Use your distribution's package manager to install the following build tools:
 * patch
 * patchelf
 
-Depending on which package you're building, you may need additional tools. The Dockerfile
-in this directory contains instructions for installing some of them.
+Depending on which package you're building, you may also need additional tools. Most of
+these can be installed using your distribution. Some of them have special entries in the
+`build` requirements section of meta.yaml:
+
+* `cmake`: A `chaquopy.toolchain.cmake` file will be generated in the build directory
+  for use with `-DCMAKE_TOOLCHAIN_FILE`.
+
+* `fortran`: You must install the Fortran compiler from
+  [here](https://github.com/mzakharo/android-gfortran/releases/tag/r21e). Create a
+  `fortran` subdirectory in the same directory as this README, and unpack the .bz2 files
+  into it.
 
 
 ## Building a package

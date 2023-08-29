@@ -8,6 +8,8 @@ source:
 build:
   number: 5
 
-    #requirements:
-    #  host:
-    #    - chaquopy-libgfortran 4.9
+requirements:
+  build:
+    - fortran
+  host:
+    - chaquopy-libgfortran 4.9
